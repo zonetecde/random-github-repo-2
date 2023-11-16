@@ -21,7 +21,7 @@ export async function POST({ url }: { url: URL }) {
 			if (!topics.endsWith(',')) topics = topics + ',';
 		}
 
-		await Repo.create({ repoId: repoId, star: star, topics: topics });
+		//await Repo.create({ repoId: repoId, star: star, topics: topics });
 
 		return new Response(String('success'));
 	} else {

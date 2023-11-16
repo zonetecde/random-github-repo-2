@@ -14,9 +14,9 @@ export default class Repo extends Model<InferAttributes<Repo>, InferCreationAttr
 	@AutoIncrement
 	declare id: CreationOptional<number>;
 
-	@Attribute(DataTypes.STRING)
+	@Attribute(DataTypes.INTEGER)
 	@NotNull
-	declare repoId: string;
+	declare repoId: number;
 
 	@Attribute(DataTypes.INTEGER)
 	@NotNull
