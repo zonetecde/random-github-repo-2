@@ -17,6 +17,7 @@ if (!Topic.isInitialized()) {
 
 sequelize.sync().then(() => {
 	//addReposFromFile();
+	//addTopicsFromFile();
 });
 
 process.on('exit', () => {
@@ -75,6 +76,28 @@ async function addReposFromFile() {
 	} catch (error) {
 		console.error('Error reading file or adding repos:', error);
 	}
+}
+
+async function addTopicsFromFile() {
+	const data = fs.readFileSync('./database/topicsJson.json', 'utf8');
+	const jsonObject = JSON.parse(data);
+
+	console.log('Adding topics from JSON file...');
+	console.log('Number of topics to add:', jsonObject.length);
+
+	jsonObject.forEach(async (element: any) => {
+		await Topic.create({
+			numberOfRepo: element.NumberOfRepo,
+			name: element.Name,
+			imageUrl: element.ImageUrl,
+			description: element.Description,
+			tag: element.Tag
+		});
+
+		console.log('Topic added:', element.Name);
+	});
+
+	console.log('Done adding topics from JSON file.');
 }
 
 export { sequelize };

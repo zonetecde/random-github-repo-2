@@ -16,7 +16,7 @@ export default class Topic extends Model<InferAttributes<Topic>, InferCreationAt
 
 	@Attribute(DataTypes.INTEGER)
 	@NotNull
-	declare numberOrRepo: number;
+	declare numberOfRepo: number;
 
 	@Attribute(DataTypes.STRING)
 	@NotNull
