@@ -1,5 +1,5 @@
 import Repo from '../../../models/Repo.js';
-import Sequelize, { Op } from '@sequelize/core';
+import Sequelize, { Op, type Filterable } from '@sequelize/core';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }: { url: URL }) {
@@ -10,8 +10,17 @@ export async function GET({ url }: { url: URL }) {
 	const start = Date.now();
 
 	const topics = topicsBrute?.split(',') ?? [];
+	const fromStar = parseInt(url.searchParams.get('fromStar') ?? '0');
+	const toStar = parseInt(url.searchParams.get('toStar') ?? '10000000');
 
-	let whereParams = {};
+	let whereParams: Sequelize.WhereOptions<
+		Sequelize.InferAttributes<
+			Repo,
+			{
+				omit: never;
+			}
+		>
+	> = {};
 
 	if (topics.length > 0) {
 		// Get repos that match the topics
@@ -22,6 +31,10 @@ export async function GET({ url }: { url: URL }) {
 			}
 		};
 	}
+
+	whereParams.star = {
+		[Op.and]: [{ [Op.gte]: fromStar }, { [Op.lte]: toStar }]
+	};
 
 	const matchedRepos = await Repo.findAll({
 		where: whereParams,

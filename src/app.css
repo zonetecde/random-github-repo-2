@@ -1,3 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@500;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+		'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	color: #e6edf3;
+}
+
+.scrollbar::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 8px;
+	background-color: #ffffff23;
+}
+
+.scrollbar::-webkit-scrollbar,
+html::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+	background-color: #00000052;
+}
+
+.scrollbar::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb {
+	border-radius: 12px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #555;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}

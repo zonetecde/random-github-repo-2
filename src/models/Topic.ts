@@ -34,3 +34,28 @@ export default class Topic extends Model<InferAttributes<Topic>, InferCreationAt
 	@NotNull
 	declare tag: string;
 }
+
+export class CTopic {
+	id: number;
+	numberOfRepo: number;
+	name: string;
+	imageUrl: string;
+	description: string;
+	tag: string;
+
+	constructor(
+		id: number,
+		numberOfRepo: number,
+		name: string,
+		imageUrl: string,
+		description: string,
+		tag: string
+	) {
+		this.id = id;
+		this.numberOfRepo = numberOfRepo;
+		this.name = name;
+		this.imageUrl = imageUrl;
+		this.description = description;
+		this.tag = tag;
+	}
+}
