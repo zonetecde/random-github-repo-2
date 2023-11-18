@@ -3,19 +3,6 @@ import Sequelize, { Op, type Filterable } from '@sequelize/core';
 import { sequelize } from '../database/db.js';
 import { fetchGithubApi } from '../fetchExtensions.js';
 
-async function RepoIdToRepo(id: number, randomRepo: Repo) {
-	const response = await fetchGithubApi(`https://api.github.com/repositories/${id}`);
-
-	if (response === null) return null;
-
-	const data = JSON.parse(response);
-	const repo = new CRepo(data, randomRepo);
-
-	if (repo && repo.RepoName && repo.Creator) return repo;
-
-	return null;
-}
-
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }: { url: URL }) {
 	// get 'topics' query parameter
@@ -51,23 +38,9 @@ export async function GET({ url }: { url: URL }) {
 		[Op.and]: [{ [Op.gte]: fromStar }, { [Op.lte]: toStar }]
 	};
 
-	const matchedRepos = await Repo.findAll({
-		where: whereParams,
-		order: Sequelize.literal('RANDOM()'),
-		limit: 5 // returns 50 random repos that match the topics
-		// and so that the client don't have to request 50 times
+	const counter = await Repo.count({
+		where: whereParams
 	});
 
-	// End chrono
-	const end = Date.now();
-	console.log(`Request took ${end - start}ms`);
-
-	const convertedRepos = await Promise.all(
-		matchedRepos.map(async (repo) => await RepoIdToRepo(repo.repoId, repo))
-	);
-
-	// Remove the null values
-	convertedRepos.filter((repo) => repo !== null);
-
-	return new Response(JSON.stringify(convertedRepos));
+	return new Response(counter.toString());
 }

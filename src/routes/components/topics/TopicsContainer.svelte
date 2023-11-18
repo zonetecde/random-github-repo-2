@@ -35,7 +35,10 @@
 	}
 </script>
 
-<div class="w-full md:w-4/12 h-full px-5 flex flex-col">
+<div
+	class={'w-full md:w-4/12 h-full md:px-5 flex flex-col md:mt-0 ' +
+		(selectedTopics.length > 4 ? '' : '-mt-10')}
+>
 	<h2 class="text-xl md:text-3xl font-bold text-center">Topics</h2>
 
 	<input
@@ -52,7 +55,7 @@
 			{#each topics as topic}
 				{#if topic.name.toLowerCase().includes(search.trim().toLowerCase()) || search.trim() === ''}
 					<div
-						class={'flex flex-row h-24 border-b border-gray-600 p-1 xl:py-3 mr-2 cursor-pointer  duration-150 ' +
+						class={'flex flex-row h-24 border-b border-gray-600 p-1 xl:py-3 md:mr-2 cursor-pointer duration-150 ' +
 							(selectedTopics.includes(topic)
 								? 'bg-[#22272b]'
 								: 'hover:bg-black hover:bg-opacity-20')}
@@ -66,11 +69,11 @@
 						{#if topic.imageUrl !== ''}
 							<img
 								src={topic.imageUrl}
-								class="w-4/12 xl:w-3/12 tag-icon aspect-square object-contain"
+								class="w-2/12 md:w-4/12 xl:w-3/12 tag-icon aspect-square object-contain"
 								alt={topic.name}
 							/>
 						{:else}
-							<div class="w-4/12 xl:w-3/12 flex justify-center">
+							<div class="w-2/12 md:w-4/12 xl:w-3/12 flex justify-center">
 								<div
 									class="w-full max-w-[71px] xl:h-auto flex items-center justify-center bg-[#0e151f] text-[#787c81] rounded-xl border border-slate-950"
 								>
@@ -78,7 +81,7 @@
 								</div>
 							</div>
 						{/if}
-						<div class="flex flex-col pl-3 overflow-y-auto scrollbar w-8/12 xl:w-9/12">
+						<div class="flex flex-col pl-3 overflow-y-auto scrollbar w-10/12 md:w-8/12 xl:w-9/12">
 							<h3 class="text-lg xl:text-xl">{topic.name}</h3>
 							<p class=" text-sm text-gray-500">{topic.description}</p>
 						</div>
