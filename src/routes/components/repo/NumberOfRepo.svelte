@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { CTopic } from '../../../models/Topic.js';
+	import Loading from '../../../assets/loading.gif';
 
 	export let selectedTopics: CTopic[] = [];
 	export let minimumStars: Number = 0;
@@ -24,6 +25,7 @@
 
 		delay = setTimeout(async () => {
 			if (isMounted) {
+				numberOfRepo = -1;
 				const res = await fetch(
 					`/api/get-number-of-repo?topics=${selectedTopics
 						.map((t) => t.name)
@@ -32,7 +34,7 @@
 				const data = await res.text();
 				numberOfRepo = parseInt(data);
 			}
-		}, 1000);
+		}, 500);
 	}
 
 	function numberWithSpaces(x: Number) {
@@ -49,7 +51,13 @@
 </script>
 
 <p class="text-base md:text-lg md:mb-0 mb-5 text-center font-bold">
-	Number of repositories : <span class={numberOfRepo > 0 ? 'text-green-600' : 'text-red-800'}
-		>{numberWithSpaces(numberOfRepo)}</span
-	>
+	Number of repositories :
+
+	{#if numberOfRepo !== -1}
+		<span class={numberOfRepo > 0 ? 'text-green-500' : 'text-red-600'}
+			>{numberWithSpaces(numberOfRepo)}</span
+		>
+	{:else}
+		<img src={Loading} alt="loading" class="w-4 h-4 inline-block" />
+	{/if}
 </p>

@@ -2,19 +2,24 @@
 	import TopicsContainer from './components/topics/TopicsContainer.svelte';
 	import SelectedTopics from './components/topics/SelectedTopics.svelte';
 	import StarSelector from './components/stars/StarSelector.svelte';
-	import RandomRepo from './components/repo/RandomRepo.svelte';
+	import Repo from './components/repo/Repo.svelte';
 	import NumberOfRepo from './components/repo/NumberOfRepo.svelte';
 
 	import type { CTopic } from '../models/Topic.js';
 	import type { CRepo } from '../models/Repo.js';
 	import { onMount } from 'svelte';
 
-	let isMounted = false;
+	import BookmarkIcon from '../assets/favorite.png';
+	import Close from '../assets/close.png';
+	import BookmarkedRepos from './components/bookmark/BookmarkedRepos.svelte';
+
+	let isMounted: boolean = false;
+	let toggleShowBookmarkedRepos: boolean = false;
 
 	let selectedTopics: CTopic[] = [];
 	let minimumStars: Number = 0;
 	let maximumStars: Number = 1_000_000;
-	let numberOfRepo: number = 820678;
+	let numberOfRepo: number = -1;
 
 	$: selectedTopics, filtersHadBeenUpdated();
 	$: minimumStars, filtersHadBeenUpdated();
@@ -48,7 +53,7 @@
 	 */
 	function getRandomRepo() {
 		if (isFetching) return;
-		if (numberOfRepo <= 0) return;
+		if (numberOfRepo === 0) return; // === et pas <= car -1 = loading
 
 		// Permet de ne pas fetch si on est déjà en train de fetch (spam de bouton)
 		// If first call or if we reached the end of the list or if the filter had been updated, fetch a new list of repos
@@ -107,28 +112,44 @@
 	>
 		<TopicsContainer bind:selectedTopics />
 
-		<div class="flex flex-col w-full h-full items-center gap-y-5 md:gap-y-2">
-			<SelectedTopics bind:selectedTopics />
-			<NumberOfRepo {selectedTopics} {minimumStars} {maximumStars} bind:numberOfRepo />
-			<StarSelector bind:minimumStars bind:maximumStars />
-
-			<RandomRepo {randomRepo} />
-
+		<div class="flex flex-col w-full h-full items-center gap-y-5 md:gap-y-2 relative">
 			<button
-				class="mb-20 w-60 bg-[#AAC0E0] h-16 md:h-12 text-black text-xl font-bold border border-black shadow-xl shadow-black rounded-lg hover:scale-105 duration-150 hover:bg-[#bccde6]"
-				on:click={getRandomRepo}>Inspire me !</button
+				class="right-0 absolute w-10"
+				on:click={() => {
+					toggleShowBookmarkedRepos = !toggleShowBookmarkedRepos;
+				}}
 			>
-			<p class="text-slate-500">
-				Created by Rayane STASZEWSKI - <a
-					href="https://www.github.com/zonetecde"
-					class="hover:underline"
-					target="_blank">GitHub</a
+				<img alt="toggle bookmark" src={toggleShowBookmarkedRepos ? Close : BookmarkIcon} />
+			</button>
+
+			{#if !toggleShowBookmarkedRepos}
+				<SelectedTopics bind:selectedTopics />
+				<NumberOfRepo {selectedTopics} {minimumStars} {maximumStars} bind:numberOfRepo />
+				<StarSelector bind:minimumStars bind:maximumStars />
+
+				<div class="w-full md:w-11/12 xl:w-8/12 my-auto mt-16">
+					<Repo {randomRepo} />
+				</div>
+
+				<button
+					class="md:mb-auto mt-5 w-72 bg-[#AAC0E0] h-16 md:h-12 text-black text-xl font-bold border border-black shadow-xl shadow-black hover:scale-105 duration-150 hover:bg-[#bccde6]"
+					on:click={getRandomRepo}>Inspire me !</button
 				>
-				-
-				<a href="https://www.buymeacoffee.com/zonetecde" class="hover:underline" target="_blank"
-					>Buy me a coffee</a
-				>
-			</p>
+
+				<p class="text-slate-500 md:block hidden">
+					Created by Rayane STASZEWSKI - <a
+						href="https://www.github.com/zonetecde"
+						class="hover:underline"
+						target="_blank">GitHub</a
+					>
+					-
+					<a href="https://www.buymeacoffee.com/zonetecde" class="hover:underline" target="_blank"
+						>Buy me a coffee</a
+					>
+				</p>
+			{:else}
+				<BookmarkedRepos />
+			{/if}
 		</div>
 	</div>
 </div>

@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { createEventDispatcher, onMount } from 'svelte';
 	import type { CRepo } from '../../../models/Repo.js';
 	import Loading from '../../../assets/loading.gif';
 
 	export let randomRepo: CRepo;
+	const dispatcher = createEventDispatcher();
 
 	let isLoading = true;
-	$: isLoading = randomRepo === null || randomRepo.Id === -1;
+	$: isLoading = randomRepo.Id === -1;
 
 	function openCreatorProfile() {
 		const url = `https://www.github.com/${randomRepo.Creator}`;
@@ -15,14 +17,61 @@
 		const url = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}`;
 		window.open(url, '_blank');
 	}
+
+	let isRepoInFavorite: boolean = false;
+	let isMounted: boolean = false;
+
+	onMount(() => {
+		isMounted = true;
+	});
+
+	/**
+	 * Check if the current repo is in the favorites
+	 * @returns true if the current repo is in the favorites, false otherwise
+	 */
+	$: {
+		randomRepo;
+		if (isMounted) {
+			isRepoInFavorite = JSON.parse(localStorage.getItem('favorites') ?? '[]').some(
+				(repo: CRepo) => repo.Id === randomRepo.Id
+			);
+		} else {
+			isRepoInFavorite = false;
+		}
+	}
+
+	/**
+	 * Add or remove the current repo to the favorites
+	 */
+	function addToFavorite() {
+		let currentFav = JSON.parse(localStorage.getItem('favorites') ?? '[]') as CRepo[];
+
+		if (currentFav.some((repo) => repo.Id === randomRepo.Id)) {
+			// Remove the repo from the favorites
+			currentFav = currentFav.filter((r) => r.Id !== randomRepo.Id);
+			localStorage.setItem('favorites', JSON.stringify(currentFav));
+			isRepoInFavorite = false;
+		} else {
+			// Add the repo to the favorites
+			localStorage.setItem('favorites', JSON.stringify([randomRepo, ...currentFav]));
+			isRepoInFavorite = true;
+		}
+
+		dispatcher('favorite-updated');
+	}
+
+	function showReadme() {
+		const url = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}/blob/master/README.md`;
+		window.open(url, '_blank');
+	}
 </script>
 
 <div
-	class={'my-auto w-full md:w-8/12 h-72 md:max-h-fit max-h-[250px] rounded-xl border-[#423e3e] border relative duration-200 ' +
+	class={'w-full h-72 md:max-h-fit max-h-[250px] rounded-xl border-[#423e3e] border relative duration-200 ' +
 		(isLoading ? 'scale-95' : '')}
 >
 	<div
-		class="w-full h-[25%] bg-[#2D3642] border-b border-[#423e3e] rounded-t-xl flex items-center px-5 overflow-x-auto gap-5"
+		class="w-full h-[35%] md:h-[25%] bg-[#2D3642] border-b border-[#423e3e] rounded-t-xl flex items-center px-5 overflow-x-auto gap-5 scrollbar"
 	>
 		<svg
 			viewBox="0 0 16 16"
@@ -36,12 +85,12 @@
 		>
 
 		<p class="text-[#8BBBFF] text-base md:text-xl underline-offset-2 min-w-fit md:min-w-0">
-			<span class="hover:underline cursor-pointer" on:click={openCreatorProfile}
-				>{randomRepo.Creator}</span
+			<button class="hover:underline cursor-pointer" on:click={openCreatorProfile}
+				>{randomRepo.Creator}</button
 			>
 			/
-			<span class="font-bold hover:underline cursor-pointer" on:click={openRepo}
-				>{randomRepo.RepoName}</span
+			<button class="font-bold hover:underline cursor-pointer text-left" on:click={openRepo}
+				>{randomRepo.RepoName}</button
 			>
 		</p>
 
@@ -70,10 +119,12 @@
 		</span>
 	</div>
 
-	<div class="bg-[#21262C] h-[75%] rounded-b-xl flex flex-col overflow-y-auto scrollbar pb-3">
-		<p class="text-[#a1a7ad] text-base p-3.5">{randomRepo.Description}</p>
+	<div
+		class="bg-[#21262C] h-[65%] md:h-[75%] rounded-b-xl flex flex-col overflow-y-auto scrollbar pb-3 relative"
+	>
+		<p class="text-[#a1a7ad] text-sm md:text-base p-3.5">{randomRepo.Description}</p>
 
-		<div class="flex flex-row gap-2 items-start justify-start flex-wrap px-3.5">
+		<div class="flex flex-row gap-2 items-start justify-start flex-wrap px-3.5 pb-4 md:pb-0">
 			{#each randomRepo.Topics.split(',') as topic}
 				{#if topic.trim() !== ''}
 					<span
@@ -83,6 +134,20 @@
 				{/if}
 			{/each}
 		</div>
+
+		<button
+			class={'absolute -bottom-4 md:bottom-0 right-24 md:right-28 w-28 bg-[#161B22] px-3 md:py-1 text-sm md:text-base rounded-tl-xl border-t border-l border-[#423e3e] cursor-pointer  duration-150 ' +
+				(isRepoInFavorite ? 'bg-[#245233] hover:bg-[#1b3b26]' : 'hover:bg-[#101216]')}
+			on:click={addToFavorite}
+		>
+			<p class="text-center">{isRepoInFavorite ? 'Unfavorite' : 'Favorite'}</p>
+		</button>
+		<button
+			class="absolute -bottom-4 md:bottom-0 right-0 bg-[#161B22] px-3 md:py-1 text-sm md:text-base border-t border-l border-[#423e3e] cursor-pointer hover:bg-[#101216] duration-150"
+			on:click={showReadme}
+		>
+			<p class="text-center">README.md</p>
+		</button>
 	</div>
 
 	{#if isLoading}

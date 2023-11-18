@@ -19,12 +19,12 @@ async function RepoIdToRepo(id: number, randomRepo: Repo) {
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }: { url: URL }) {
 	// get 'topics' query parameter
-	const topicsBrute = url.searchParams.get('topics');
+	const topicsBrute = url.searchParams.get('topics') ?? '';
 
 	// Start chrono
 	const start = Date.now();
 
-	const topics = topicsBrute?.split(',') ?? [];
+	const topics: string[] = topicsBrute !== '' ? topicsBrute?.split(',') : [];
 	const fromStar = parseInt(url.searchParams.get('fromStar') ?? '0');
 	const toStar = parseInt(url.searchParams.get('toStar') ?? '10000000');
 
@@ -42,7 +42,7 @@ export async function GET({ url }: { url: URL }) {
 		// Conditional because if there are no topics, we don't want to filter by topics
 		whereParams = {
 			topics: {
-				[Op.and]: topics.map((topic) => ({ [Op.like]: `%${topic}%` }))
+				[Op.and]: topics.map((topic) => ({ [Op.like]: `%,${topic},%` }))
 			}
 		};
 	}
@@ -62,12 +62,12 @@ export async function GET({ url }: { url: URL }) {
 	const end = Date.now();
 	console.log(`Request took ${end - start}ms`);
 
-	const convertedRepos = await Promise.all(
+	let convertedRepos = await Promise.all(
 		matchedRepos.map(async (repo) => await RepoIdToRepo(repo.repoId, repo))
 	);
 
 	// Remove the null values
-	convertedRepos.filter((repo) => repo !== null);
+	convertedRepos = convertedRepos.filter((repo) => repo !== null);
 
 	return new Response(JSON.stringify(convertedRepos));
 }
