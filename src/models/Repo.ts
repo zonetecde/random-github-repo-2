@@ -26,3 +26,16 @@ export default class Repo extends Model<InferAttributes<Repo>, InferCreationAttr
 	@NotNull
 	declare topics: string;
 }
+
+export class CRepo {
+	id: number;
+	repoId: number;
+	star: number;
+	topics: string;
+	constructor(repo: Repo) {
+		this.id = repo.id;
+		this.repoId = repo.repoId;
+		this.star = repo.star;
+		this.topics = repo.topics;
+	}
+}

@@ -4,7 +4,7 @@
 
 	let topics: CTopic[];
 	let search = '';
-	export let selectedTopics: CTopic[] = [];
+	export let selectedTopics: CTopic[];
 
 	/**
 	 * Fetches the topics from the API
@@ -36,7 +36,7 @@
 </script>
 
 <div class="w-full md:w-4/12 h-full px-5 flex flex-col">
-	<h2 class="text-2xl md:text-4xl font-bold text-center">Topics</h2>
+	<h2 class="text-xl md:text-3xl font-bold text-center">Topics</h2>
 
 	<input
 		type="text"
