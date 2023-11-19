@@ -38,7 +38,6 @@
 		"dotenv": "^16.3.1",
 		"mysql2": "^3.6.3",
 		"node-fetch": "^3.3.2",
-		"prisma": "^5.6.0",
 		"sequelize": "^6.35.0",
 		"sqlite3": "^5.1.6"
 	},
