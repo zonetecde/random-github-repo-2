@@ -55,12 +55,15 @@ async function addReposLoop(specialLoop: boolean = true) {
 							const tags = element.topics as string[];
 							const description = element.description ?? '';
 
+							if(description.trim() === '') continue; // pas de description, on passe
+
 							let formattedTopics = tags.join(',');
 
 							description.split(' ').forEach((word: string) => {
+								const lowerCaseWord = word.toLocaleLowerCase();
 								if (
-									formattedTopics.includes(',' + word + ',') === false &&
-									topics.some((topic) => topic.name === word || topic.tag === word)
+									formattedTopics.includes(',' + lowerCaseWord + ',') === false &&
+									topics.some((topic) => topic.name.toLowerCase() === lowerCaseWord || topic.tag === lowerCaseWord)
 								) {
 									formattedTopics += formattedTopics.length !== 0 ? ',' : '' + word;
 								}
