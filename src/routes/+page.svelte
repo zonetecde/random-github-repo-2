@@ -4,6 +4,7 @@
 	import StarSelector from './components/stars/StarSelector.svelte';
 	import Repo from './components/repo/Repo.svelte';
 	import NumberOfRepo from './components/repo/NumberOfRepo.svelte';
+	import GithubLogo from '../assets/github-logo.png';
 
 	import type { CTopic } from '../models/Topic.js';
 	import type { CRepo } from '../models/Repo.js';
@@ -99,13 +100,26 @@
 		setTimeout(() => {
 			isMounted = true;
 		}, 1000);
+
+		setTimeout(() => {
+			// Bypass le bug de scroll en bas de page
+			window.document.getElementById('scrolltop')!.scrollIntoView(true);
+		}, 0);
 	});
 </script>
 
-<div class="w-screen h-screen flex justify-center flex-col items-center">
+<div class="w-screen h-screen flex justify-center flex-col items-center overflow-y-auto">
 	<h1 class="mt-5 md:mt-0 pb-7 -mb-3.5 md:mb-3 text-2xl md:text-5xl xl:text-6xl font-bold">
 		Random Github Repo
 	</h1>
+
+	<a
+		class="absolute top-1.5 right-1.5 w-16 opacity-50"
+		target="_blank"
+		href="https://www.github.com/zonetecde/random-github-repo-2"
+	>
+		<img src={GithubLogo} alt="Github Repo" />
+	</a>
 
 	<div
 		class="w-full md:w-11/12 h-full md:h-[80vh] bg-[#161b22] border-2 border-black shadow-2xl shadow-black md:rounded-xl p-5 flex flex-col-reverse overflow-y-auto md:flex-row"
@@ -113,8 +127,9 @@
 		<TopicsContainer bind:selectedTopics />
 
 		<div class="flex flex-col w-full h-full items-center gap-y-5 md:gap-y-2 relative">
+			<div id="scrolltop" class="absolute -top-10" />
 			<button
-				class="right-0 absolute w-10"
+				class="right-0 absolute w-5 md:w-10"
 				on:click={() => {
 					toggleShowBookmarkedRepos = !toggleShowBookmarkedRepos;
 				}}
