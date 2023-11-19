@@ -2,8 +2,9 @@ import { Sequelize } from '@sequelize/core';
 import Repo from '../../../models/Repo.js';
 import Topic from '../../../models/Topic.js';
 import fs from 'fs';
+import addReposLoop from './repoAdder.js';
 
-const sequelize = new Sequelize('sqlite:./database/database.db');
+const sequelize = new Sequelize('sqlite:./database/database.db', { logging: false });
 
 if (!Repo.isInitialized()) {
 	console.log('Initializing repo table...');
@@ -18,6 +19,9 @@ if (!Topic.isInitialized()) {
 sequelize.sync().then(() => {
 	//addReposFromFile();
 	//addTopicsFromFile();
+
+	// Add repos to the database from the github API
+	addReposLoop();
 });
 
 process.on('exit', () => {

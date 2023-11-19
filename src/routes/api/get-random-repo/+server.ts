@@ -2,6 +2,7 @@ import Repo, { CRepo } from '../../../models/Repo.js';
 import Sequelize, { Op, type Filterable } from '@sequelize/core';
 import { sequelize } from '../database/db.js';
 import { fetchGithubApi } from '../fetchExtensions.js';
+import Variables from '../globalVariables.js';
 
 async function RepoIdToRepo(id: number, randomRepo: Repo) {
 	const response = await fetchGithubApi(`https://api.github.com/repositories/${id}`);
@@ -18,6 +19,8 @@ async function RepoIdToRepo(id: number, randomRepo: Repo) {
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }: { url: URL }) {
+	Variables.pauseAddingRepos();
+
 	// get 'topics' query parameter
 	const topicsBrute = url.searchParams.get('topics') ?? '';
 

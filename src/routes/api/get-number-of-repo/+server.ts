@@ -2,10 +2,12 @@ import Repo, { CRepo } from '../../../models/Repo.js';
 import Sequelize, { Op, type Filterable } from '@sequelize/core';
 import { sequelize } from '../database/db.js';
 import { fetchGithubApi } from '../fetchExtensions.js';
+import Variables from '../globalVariables.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ url }: { url: URL }) {
-	// get 'topics' query parameter
+	Variables.pauseAddingRepos();
+
 	const topicsBrute = url.searchParams.get('topics') ?? '';
 
 	const topics: string[] = topicsBrute !== '' ? topicsBrute?.split(',') : [];
