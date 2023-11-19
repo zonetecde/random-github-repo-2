@@ -4,18 +4,17 @@ import Variables from './globalVariables.js';
 
 export async function fetchGithubApi(
 	apiUrl: string,
-	useSecondApiKey: boolean = false
+	currentRetry: number = 1
 ): Promise<string | null> {
-	const maxRetries = 300;
-	let currentRetry = 0;
+	const maxRetries = 5;
 
-	while (currentRetry < maxRetries) {
+	while (currentRetry <= maxRetries) {
 		const headers = new Headers();
 		headers.append('Accept', 'application/vnd.github+json');
-		headers.append(
-			'Authorization',
-			'Bearer ' + (useSecondApiKey ? ApiKeys.firstKey : ApiKeys.secondKey)
-		);
+		headers.append('Authorization', 'Bearer ' + ApiKeys.apiKeys[Variables.apiKeyIndex]);
+
+		Variables.apiKeyIndex = (Variables.apiKeyIndex + 1) % ApiKeys.apiKeys.length;
+
 		headers.append('X-GitHub-Api-Version', '2022-11-28');
 		headers.append('User-Agent', 'zoneck-api');
 
@@ -27,9 +26,10 @@ export async function fetchGithubApi(
 			// Try again in 5 second
 			currentRetry += 1;
 			console.log('Request failed. Retrying in 5 seconds...');
-			await new Promise((resolve) => setTimeout(resolve, 60 * 1000 * 1.25));
+			await new Promise((resolve) => setTimeout(resolve, 5000));
+			return fetchGithubApi(apiUrl, currentRetry + 1);
 		} else return await response.text();
 	}
 
-	return null!; // This line will never be reached if the request is successful
+	return null!;
 }

@@ -56,9 +56,24 @@ export class CRepo {
 			console.log('Updated star count');
 		}
 		// Update the topics if it's different
-		if (this.Topics.slice(1, -1) !== item.topics.join(',') && this.Topics !== '') {
-			let newTopics = ',' + (item.topics as string[]).join(',') + ',';
+		let topicArray = this.Topics.split(',');
+
+		// Si des topics présents dans le repo ne sont pas dans la base de données, on les ajoute
+		if ((item.topics as string[]).every((topic: string) => topicArray.includes(topic)) === false) {
+			// On ajoute les topics du repo qui sont absent à la base de données
+			(item.topics as string[]).forEach((topic: string) => {
+				if (!topicArray.includes(topic)) {
+					topicArray.push(topic);
+				}
+			});
+
+			// On met à jour les topics du repo
+			let newTopics = ',' + topicArray.join(',') + ',';
+
 			if (newTopics !== ',,') {
+				// console.log('Old topics:', this.Topics);
+				// console.log('New topics:', newTopics);
+
 				randomRepo.update({ topics: newTopics });
 				randomRepo.save();
 				console.log('Updated topics');

@@ -4,7 +4,7 @@ import Repo from '../../../models/Repo.js';
 import { Op } from '@sequelize/core';
 import Variables from '../globalVariables.js';
 
-async function addReposLoop(specialLoop: boolean = true) {
+async function addReposLoop(specialLoop: boolean = false) {
 	let removedTopics: string[] = [];
 
 	const topics: Topic[] = (await Topic.findAll()).toSorted((a, b) => {
@@ -13,7 +13,7 @@ async function addReposLoop(specialLoop: boolean = true) {
 
 	const tasks: Promise<any>[] = [];
 
-	for (let page = 1; page <= 3; page++) {
+	for (let page = 1; page <= 5; page++) {
 		tasks.push(
 			new Promise(async (resolve) => {
 				if (Variables.processAddingRepos)
@@ -55,7 +55,7 @@ async function addReposLoop(specialLoop: boolean = true) {
 							const tags = element.topics as string[];
 							const description = element.description ?? '';
 
-							if(description.trim() === '') continue; // pas de description, on passe
+							if (description.trim() === '') continue; // pas de description, on passe
 
 							let formattedTopics = tags.join(',');
 
@@ -63,9 +63,12 @@ async function addReposLoop(specialLoop: boolean = true) {
 								const lowerCaseWord = word.toLocaleLowerCase();
 								if (
 									formattedTopics.includes(',' + lowerCaseWord + ',') === false &&
-									topics.some((topic) => topic.name.toLowerCase() === lowerCaseWord || topic.tag === lowerCaseWord)
+									topics.some(
+										(topic) =>
+											topic.name.toLowerCase() === lowerCaseWord || topic.tag === lowerCaseWord
+									)
 								) {
-									formattedTopics += formattedTopics.length !== 0 ? ',' : '' + word;
+									formattedTopics += formattedTopics.length !== 0 ? ',' : '' + lowerCaseWord;
 								}
 							});
 
@@ -119,7 +122,8 @@ async function addReposLoop(specialLoop: boolean = true) {
 		topic.save();
 	}
 
-	addReposLoop(!specialLoop); // Infinite call
+	Variables.specialLoopIndex += 1;
+	addReposLoop(Variables.specialLoopIndex % 5 === 0); // Infinite call
 }
 
 async function waitToContinue() {
