@@ -22,7 +22,7 @@
 </h1>
 
 <div
-	class="w-full h-full overflow-y-auto scrollbar grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-5 px-5 pt-5"
+	class="w-full h-full overflow-y-auto scrollbar grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-5 px-5 pt-20 md:pt-5"
 >
 	{#each bookmarkedRepos as repo}
 		<Repo randomRepo={repo} on:favorite-updated={updateBookmarkedRepo} />

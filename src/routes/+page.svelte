@@ -114,7 +114,7 @@
 	</h1>
 
 	<a
-		class="absolute top-1.5 right-1.5 w-8 md:w-16 opacity-50"
+		class="absolute top-1.5 right-1.5 w-12 md:w-16 opacity-50"
 		target="_blank"
 		href="https://www.github.com/zonetecde/random-github-repo-2"
 	>
