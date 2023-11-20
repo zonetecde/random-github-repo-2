@@ -129,7 +129,7 @@
 		<div class="flex flex-col w-full h-full items-center gap-y-5 md:gap-y-2 relative">
 			<div id="scrolltop" class="absolute -top-10" />
 			<button
-				class="right-0 absolute w-5 md:w-10"
+				class="right-0 absolute w-3.5 md:w-10"
 				on:click={() => {
 					toggleShowBookmarkedRepos = !toggleShowBookmarkedRepos;
 				}}

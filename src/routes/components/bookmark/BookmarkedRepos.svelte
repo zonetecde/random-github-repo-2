@@ -21,7 +21,9 @@
 		  (bookmarkedRepos.length === 1 ? ' bookmarked repository' : ' bookmarked repositories')}
 </h1>
 
-<div class="w-full h-full overflow-y-auto scrollbar grid grid-cols-2 gap-5 px-5 pt-5">
+<div
+	class="w-full h-full overflow-y-auto scrollbar grid grid-cols-1 gap-y-20 md:grid-cols-2 md:gap-5 px-5 pt-5"
+>
 	{#each bookmarkedRepos as repo}
 		<Repo randomRepo={repo} on:favorite-updated={updateBookmarkedRepo} />
 	{/each}
