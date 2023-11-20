@@ -1,38 +1,17 @@
-# create-svelte
+# Random Github Repository Generator 
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A website that give you random GitHub repository to get inspired
 
-## Creating a project
+Source code of the [Random Github Repo](https://www.randomgithubrepo.site) website
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+[![CC BY 4.0][cc-by-shield]][cc-by]
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This work is licensed under a
+[Creative Commons Attribution 4.0 International License][cc-by].
 
-## Developing
+[cc-by]: http://creativecommons.org/licenses/by/4.0/
+[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+[![wakatime](https://wakatime.com/badge/user/b8ecff52-7743-4a1e-8b28-93fcce7c9b7d/project/018bcf08-82f6-4b73-97f5-b730e3ffbdef.svg)](https://wakatime.com/badge/user/b8ecff52-7743-4a1e-8b28-93fcce7c9b7d/project/018bcf08-82f6-4b73-97f5-b730e3ffbdef)
