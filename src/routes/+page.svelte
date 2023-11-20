@@ -114,7 +114,7 @@
 	</h1>
 
 	<a
-		class="absolute top-1.5 right-1.5 w-16 opacity-50"
+		class="absolute top-1.5 right-1.5 w-8 md:w-16 opacity-50"
 		target="_blank"
 		href="https://www.github.com/zonetecde/random-github-repo-2"
 	>
@@ -129,7 +129,7 @@
 		<div class="flex flex-col w-full h-full items-center gap-y-5 md:gap-y-2 relative">
 			<div id="scrolltop" class="absolute -top-10" />
 			<button
-				class="right-0 absolute w-3.5 md:w-10"
+				class="right-0 absolute w-5 md:w-10"
 				on:click={() => {
 					toggleShowBookmarkedRepos = !toggleShowBookmarkedRepos;
 				}}
