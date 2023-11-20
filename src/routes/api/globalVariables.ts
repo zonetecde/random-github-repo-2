@@ -11,7 +11,7 @@ export default class Variables {
 		setTimeout(() => {
 			console.log("Le site n'est plus utilisé");
 			Variables.processAddingRepos = true;
-		}, 5); // 2 minutes
-		//}, 2 * 60 * 1000); // 2 minutes
+			//}, 5); // 2 minutes
+		}, 2 * 60 * 1000); // 2 minutes
 	};
 }
