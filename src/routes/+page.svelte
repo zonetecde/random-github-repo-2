@@ -143,7 +143,21 @@
 				<StarSelector bind:minimumStars bind:maximumStars />
 
 				<div class="w-full md:w-11/12 xl:w-8/12 my-auto mt-16">
-					<Repo {randomRepo} />
+					<Repo
+						{randomRepo}
+						on:topic-clicked={(e) =>
+							(selectedTopics = [
+								...selectedTopics,
+								{
+									name: e.detail,
+									tag: e.detail,
+									imageUrl: '',
+									description: '',
+									id: -1,
+									numberOfRepo: 0
+								}
+							])}
+					/>
 				</div>
 
 				<button
@@ -152,7 +166,7 @@
 				>
 
 				<p class="text-slate-500 md:block hidden">
-					Created by Rayane STASZEWSKI - <a
+					Made by Rayane STASZEWSKI - <a
 						href="https://www.github.com/zonetecde"
 						class="hover:underline"
 						target="_blank">GitHub</a

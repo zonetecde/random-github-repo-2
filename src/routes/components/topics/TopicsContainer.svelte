@@ -42,6 +42,14 @@
 	function doesTopicMatchSearch(topic: CTopic, search: string) {
 		return search.trim() === '' || topic.name.toLowerCase().includes(search.trim().toLowerCase());
 	}
+
+	/**
+	 * Checks if a topic exists
+	 * @param search The topic to check
+	 */
+	function doesTopicExist(search: string) {
+		return topics.some((t) => t.name.toLowerCase() === search.trim().toLowerCase());
+	}
 </script>
 
 <div
@@ -97,10 +105,11 @@
 					</div>
 				{/if}
 			{/each}
-		{:else}
-			<p class="text-center">No topics found.</p>
+		{/if}
+
+		{#if search.trim() !== '' && !doesTopicExist(search)}
 			<button
-				class="underline text-center text-lg underline-offset-2 cursor-pointer"
+				class="text-center text-lg cursor-pointer mt-3 w-full"
 				on:click={() =>
 					updateSelectedTopics({
 						name: search,
@@ -111,7 +120,7 @@
 						numberOfRepo: 0
 					})}
 			>
-				Include the '{search}' tag anyway
+				Include the <code class="bold font-bold">{search}</code> tag
 			</button>
 		{/if}
 	</div>

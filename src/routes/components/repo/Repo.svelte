@@ -9,14 +9,9 @@
 	let isLoading = true;
 	$: isLoading = randomRepo.Id === -1;
 
-	function openCreatorProfile() {
-		const url = `https://www.github.com/${randomRepo.Creator}`;
-		window.open(url, '_blank');
-	}
-	function openRepo() {
-		const url = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}`;
-		window.open(url, '_blank');
-	}
+	$: creatorProfileUrl = `https://www.github.com/${randomRepo.Creator}`;
+	$: repoUrl = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}`;
+	$: readMeUrl = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}/blob/master/README.md`;
 
 	let isRepoInFavorite: boolean = false;
 	let isMounted: boolean = false;
@@ -59,11 +54,6 @@
 
 		dispatcher('favorite-updated');
 	}
-
-	function showReadme() {
-		const url = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}/blob/master/README.md`;
-		window.open(url, '_blank');
-	}
 </script>
 
 <div
@@ -86,12 +76,12 @@
 			>
 
 			<p class="text-[#8BBBFF] text-base md:text-xl underline-offset-2 min-w-fit md:min-w-0">
-				<button class="hover:underline cursor-pointer" on:click={openCreatorProfile}
-					>{randomRepo.Creator}</button
+				<a class="hover:underline cursor-pointer" href={creatorProfileUrl} target="_blank"
+					>{randomRepo.Creator}</a
 				>
 				/
-				<button class="font-bold hover:underline cursor-pointer text-left" on:click={openRepo}
-					>{randomRepo.RepoName}</button
+				<a class="font-bold hover:underline cursor-pointer text-left" href={repoUrl} target="_blank"
+					>{randomRepo.RepoName}</a
 				>
 			</p>
 		</div>
@@ -136,9 +126,11 @@
 		<div class="flex flex-row gap-2 items-start justify-start flex-wrap px-3.5 pb-4 md:pb-0">
 			{#each randomRepo.Topics.split(',') as topic}
 				{#if topic.trim() !== ''}
-					<span
+					<button
 						class="rounded-lg px-2 py-1 text-sm bg-[#121d2f] text-[#2f81f7] hover:bg-[#2057a3] hover:text-white cursor-pointer"
-						>{topic}</span
+						on:click={() => {
+							dispatcher('topic-clicked', topic);
+						}}>{topic}</button
 					>
 				{/if}
 			{/each}
@@ -151,12 +143,13 @@
 		>
 			<p class="text-center">{isRepoInFavorite ? 'Unfavorite' : 'Favorite'}</p>
 		</button>
-		<button
+		<a
 			class="absolute bottom-0 right-0 bg-[#161B22] px-3 md:py-1 text-sm md:text-base border-t border-l border-[#423e3e] cursor-pointer hover:bg-[#101216] duration-150"
-			on:click={showReadme}
+			href={readMeUrl}
+			target="_blank"
 		>
 			<p class="text-center">README.md</p>
-		</button>
+		</a>
 	</div>
 
 	{#if isLoading}
