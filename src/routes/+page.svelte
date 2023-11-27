@@ -122,7 +122,7 @@
 	</a>
 
 	<div
-		class="w-full md:w-11/12 h-full md:h-[80vh] bg-[#161b22] border-2 border-black shadow-2xl shadow-black md:rounded-xl p-5 flex flex-col-reverse overflow-y-auto md:flex-row"
+		class="w-full md:w-11/12 h-full md:h-[80vh] bg-[#161b22] border-2 border-black shadow-2xl shadow-black md:rounded-xl p-5 flex flex-col-reverse overflow-y-auto md:flex-row scrollbar"
 	>
 		<TopicsContainer bind:selectedTopics />
 
@@ -142,7 +142,7 @@
 				<NumberOfRepo {selectedTopics} {minimumStars} {maximumStars} bind:numberOfRepo />
 				<StarSelector bind:minimumStars bind:maximumStars />
 
-				<div class="w-full md:w-11/12 xl:w-8/12 my-auto mt-16">
+				<div class="w-full md:w-11/12 xl:w-8/12 xl:my-auto mt-16">
 					<Repo
 						{randomRepo}
 						on:topic-clicked={(e) =>
