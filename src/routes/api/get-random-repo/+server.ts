@@ -32,7 +32,7 @@ export async function GET({ url }: { url: URL }) {
 	const toStar = parseInt(url.searchParams.get('toStar') ?? '10000000');
 
 	// get ip adress
-	if (!url.origin.includes('randomgithubrepo.site')) {
+	if (!url.origin.includes('sveltekit')) {
 		fetch(
 			'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
 				'Blocked from origin: ' +
