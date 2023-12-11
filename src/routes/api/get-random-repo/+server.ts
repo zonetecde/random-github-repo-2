@@ -31,6 +31,20 @@ export async function GET({ url }: { url: URL }) {
 	const fromStar = parseInt(url.searchParams.get('fromStar') ?? '0');
 	const toStar = parseInt(url.searchParams.get('toStar') ?? '10000000');
 
+	// get ip adress
+	if (!url.origin.includes('randomgithubrepo.site')) {
+		fetch(
+			'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
+				'Blocked from origin: ' +
+				url.origin,
+			{
+				method: 'POST'
+			}
+		);
+
+		return new Response('Unauthorized', { status: 401 });
+	}
+
 	// Analytic
 	fetch(
 		'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
