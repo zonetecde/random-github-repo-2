@@ -34,7 +34,16 @@ export async function GET({ url }: { url: URL }) {
 	// get ip adress
 	const ip = url.searchParams.get('ip');
 
-	if (ip === null) return new Response('Unauthorized', { status: 401 });
+	if (ip === null) {
+		fetch(
+			'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
+				'User blocked',
+			{
+				method: 'POST'
+			}
+		);
+		return new Response('Unauthorized', { status: 401 });
+	}
 
 	// Analytic
 	fetch(
