@@ -2,6 +2,7 @@ export default class Variables {
 	static processAddingRepos = true;
 	static apiKeyIndex = 0;
 	static specialLoopIndex = 0;
+	static ipAddress = '';
 
 	static pauseAddingRepos = () => {
 		// Le site est en train d'être utilisé

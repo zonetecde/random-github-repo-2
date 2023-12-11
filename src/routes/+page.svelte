@@ -13,6 +13,7 @@
 	import BookmarkIcon from '../assets/favorite.png';
 	import Close from '../assets/close.png';
 	import BookmarkedRepos from './components/bookmark/BookmarkedRepos.svelte';
+	import globalVariables from './api/globalVariables.js';
 
 	let isMounted: boolean = false;
 	let toggleShowBookmarkedRepos: boolean = false;
@@ -52,7 +53,7 @@
 	/**
 	 * Fetches a random repo from the API
 	 */
-	function getRandomRepo() {
+	async function getRandomRepo() {
 		if (isFetching) return;
 		if (numberOfRepo === 0) return; // === et pas <= car -1 = loading
 
@@ -66,13 +67,24 @@
 		) {
 			isFetching = true;
 			if (randomRepo) randomRepo.Id = -1;
+
+			if (globalVariables.ipAddress === '') {
+				// Get IP address
+				console.log('Fetching IP address...');
+				const ans = await fetch('https://api.ipify.org?format=json');
+				const ip = await ans.json();
+				globalVariables.ipAddress = ip.ip;
+			}
+
 			fetch(
 				'/api/get-random-repo?fromStar=' +
 					minimumStars +
 					'&toStar=' +
 					maximumStars +
 					'&topics=' +
-					selectedTopics.map((t) => t.tag).join(',')
+					selectedTopics.map((t) => t.tag).join(',') +
+					'&ip=' +
+					globalVariables.ipAddress
 			)
 				.then((res) => res.json())
 				.then((data) => {
@@ -93,7 +105,7 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		// Charge un repo aléatoire au chargement de la page
 		getRandomRepo();
 
