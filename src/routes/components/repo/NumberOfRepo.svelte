@@ -28,7 +28,7 @@
 				numberOfRepo = -1;
 				const res = await fetch(
 					`/api/get-number-of-repo?topics=${selectedTopics
-						.map((t) => t.name)
+						.map((t) => t.tag)
 						.join(',')}&fromStar=${minimumStars}&toStar=${maximumStars}`
 				);
 				const data = await res.text();
