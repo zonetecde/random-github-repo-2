@@ -68,23 +68,13 @@
 			isFetching = true;
 			if (randomRepo) randomRepo.Id = -1;
 
-			if (globalVariables.ipAddress === '') {
-				// Get IP address
-				console.log('Fetching IP address...');
-				const ans = await fetch('https://api.ipify.org?format=json');
-				const ip = await ans.json();
-				globalVariables.ipAddress = ip.ip;
-			}
-
 			fetch(
 				'/api/get-random-repo?fromStar=' +
 					minimumStars +
 					'&toStar=' +
 					maximumStars +
 					'&topics=' +
-					selectedTopics.map((t) => t.tag).join(',') +
-					'&ip=' +
-					globalVariables.ipAddress
+					selectedTopics.map((t) => t.tag).join(',')
 			)
 				.then((res) => res.json())
 				.then((data) => {

@@ -3,6 +3,7 @@ import Sequelize, { Op, type Filterable } from '@sequelize/core';
 import { sequelize } from '../database/db.js';
 import { fetchGithubApi } from '../fetchExtensions.js';
 import Variables from '../globalVariables.js';
+import fs from 'fs';
 
 async function RepoIdToRepo(id: number, randomRepo: Repo) {
 	const response = await fetchGithubApi(`https://api.github.com/repositories/${id}`);
@@ -30,35 +31,6 @@ export async function GET({ url }: { url: URL }) {
 	const topics: string[] = topicsBrute !== '' ? topicsBrute?.split(',') : [];
 	const fromStar = parseInt(url.searchParams.get('fromStar') ?? '0');
 	const toStar = parseInt(url.searchParams.get('toStar') ?? '10000000');
-
-	// get ip adress
-	const ip = url.searchParams.get('ip');
-
-	if (ip === null) {
-		fetch(
-			'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
-				'User blocked',
-			{
-				method: 'POST'
-			}
-		);
-		return new Response('Unauthorized', { status: 401 });
-	}
-
-	// Analytic
-	fetch(
-		'https://www.rayanestaszewski.fr/api/software/software-being-used?softwareName=RGR&detail=' +
-			topicsBrute +
-			', ' +
-			fromStar +
-			', ' +
-			toStar +
-			', ' +
-			ip,
-		{
-			method: 'POST'
-		}
-	);
 
 	let whereParams: Sequelize.WhereOptions<
 		Sequelize.InferAttributes<
@@ -100,6 +72,10 @@ export async function GET({ url }: { url: URL }) {
 
 	// Remove the null values
 	convertedRepos = convertedRepos.filter((repo) => repo !== null);
+
+	// Analytic
+	// create log files and append the data
+	fs.appendFileSync('log.txt', topicsBrute + ', ' + fromStar + ', ' + toStar + '\n');
 
 	return new Response(JSON.stringify(convertedRepos));
 }
