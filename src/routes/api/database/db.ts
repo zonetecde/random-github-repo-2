@@ -19,9 +19,8 @@ if (!Topic.isInitialized()) {
 sequelize.sync().then(() => {
 	//addReposFromFile();
 	//addTopicsFromFile();
-
 	// Add repos to the database from the github API
-	addReposLoop();
+	//addReposLoop();
 });
 
 process.on('exit', () => {
