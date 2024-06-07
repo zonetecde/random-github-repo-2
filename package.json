@@ -33,7 +33,6 @@
 		"vite": "^4.4.2"
 	},
 	"dependencies": {
-		"@prisma/client": "^5.6.0",
 		"@sequelize/core": "^7.0.0-alpha.29",
 		"dotenv": "^16.3.1",
 		"mysql2": "^3.6.3",
