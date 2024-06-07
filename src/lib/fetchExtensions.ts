@@ -1,6 +1,6 @@
 import fetch, { Headers } from 'node-fetch';
-import ApiKeys from './apiKeys.js';
-import Variables from './globalVariables.js';
+import Variables from '../routes/api/globalVariables.js';
+import ApiKeys from './server/apiKeys.js';
 
 export async function fetchGithubApi(
 	apiUrl: string,

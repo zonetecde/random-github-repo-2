@@ -1,7 +1,5 @@
-import Repo, { CRepo } from '../../../models/Repo.js';
+import Repo, { CRepo } from '../../../lib/models/Repo.js';
 import Sequelize, { Op, type Filterable } from '@sequelize/core';
-import { sequelize } from '../database/db.js';
-import { fetchGithubApi } from '../fetchExtensions.js';
 import Variables from '../globalVariables.js';
 
 /** @type {import('./$types').RequestHandler} */

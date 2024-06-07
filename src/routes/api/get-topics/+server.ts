@@ -1,6 +1,6 @@
-import Repo from '../../../models/Repo.js';
+import Repo from '../../../lib/models/Repo.js';
 import Sequelize, { Op } from '@sequelize/core';
-import Topics from '../../../models/Topic.js';
+import Topics from '../../../lib/models/Topic.js';
 import { sequelize } from '../database/db.js';
 import Variables from '../globalVariables.js';
 

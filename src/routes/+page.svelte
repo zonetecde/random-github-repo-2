@@ -6,14 +6,14 @@
 	import NumberOfRepo from './components/repo/NumberOfRepo.svelte';
 	import GithubLogo from '../assets/github-logo.png';
 
-	import type { CTopic } from '../models/Topic.js';
-	import type { CRepo } from '../models/Repo.js';
 	import { onMount } from 'svelte';
 
 	import BookmarkIcon from '../assets/favorite.png';
 	import Close from '../assets/close.png';
 	import BookmarkedRepos from './components/bookmark/BookmarkedRepos.svelte';
-	import globalVariables from './api/globalVariables.js';
+
+	import type { CTopic } from '$lib/models/Topic.js';
+	import type { CRepo } from '$lib/models/Repo.js';
 
 	let isMounted: boolean = false;
 	let toggleShowBookmarkedRepos: boolean = false;
