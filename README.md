@@ -3,6 +3,7 @@
 Source code of the [Random Github Repo](https://www.randomgithubrepo.site) website
 A website that give you random GitHub repository to get inspired
 
+<img src="https://rayanestaszewski.fr/assets/rgr.png"/>
 
 ### Set up:
 
