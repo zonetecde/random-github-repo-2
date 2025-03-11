@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
-import Repo from '$lib/models/Repo.js';
-import Topic from '$lib/models/Topic.js';
+import Repo from '$lib/models/Repo.ts';
+import Topic from '$lib/models/Topic.ts';
 import { Sequelize } from '@sequelize/core';
 
 import fs from 'fs';

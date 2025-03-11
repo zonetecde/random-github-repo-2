@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CTopic } from '../../../models/Topic.js';
+	import type { CTopic } from '../../../models/Topic.ts';
 	import DeleteIcon from '../../../assets/close.png';
 
 	export let selectedTopics: CTopic[] = [];

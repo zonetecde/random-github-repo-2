@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import type { CRepo } from '../../../models/Repo.js';
+	import type { CRepo } from '../../../models/Repo.ts';
 	import Loading from '../../../assets/loading.gif';
 
 	export let randomRepo: CRepo;
 	const dispatcher = createEventDispatcher();
 
 	let isLoading = true;
-	$: isLoading = randomRepo.Id === -1;
+	$: isLoading = randomRepo?.Id === -1;
 
-	$: creatorProfileUrl = `https://www.github.com/${randomRepo.Creator}`;
-	$: repoUrl = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}`;
-	$: readMeUrl = `https://www.github.com/${randomRepo.Creator}/${randomRepo.RepoName}/blob/master/README.md`;
+	$: creatorProfileUrl = `https://www.github.com/${randomRepo?.Creator}`;
+	$: repoUrl = `https://www.github.com/${randomRepo?.Creator}/${randomRepo?.RepoName}`;
+	$: readMeUrl = `https://www.github.com/${randomRepo?.Creator}/${randomRepo?.RepoName}/blob/master/README.md`;
 
 	let isRepoInFavorite: boolean = false;
 	let isMounted: boolean = false;
@@ -28,7 +28,7 @@
 		randomRepo;
 		if (isMounted) {
 			isRepoInFavorite = JSON.parse(localStorage.getItem('favorites') ?? '[]').some(
-				(repo: CRepo) => repo.Id === randomRepo.Id
+				(repo: CRepo) => repo.Id === randomRepo?.Id
 			);
 		} else {
 			isRepoInFavorite = false;
@@ -41,9 +41,9 @@
 	function addToFavorite() {
 		let currentFav = JSON.parse(localStorage.getItem('favorites') ?? '[]') as CRepo[];
 
-		if (currentFav.some((repo) => repo.Id === randomRepo.Id)) {
+		if (currentFav.some((repo) => repo.Id === randomRepo?.Id)) {
 			// Remove the repo from the favorites
-			currentFav = currentFav.filter((r) => r.Id !== randomRepo.Id);
+			currentFav = currentFav.filter((r) => r.Id !== randomRepo?.Id);
 			localStorage.setItem('favorites', JSON.stringify(currentFav));
 			isRepoInFavorite = false;
 		} else {
@@ -54,6 +54,8 @@
 
 		dispatcher('favorite-updated');
 	}
+
+	$: topics = randomRepo?.Topics ? randomRepo.Topics.split(',') : [];
 </script>
 
 <div
@@ -77,30 +79,30 @@
 
 			<p class="text-[#8BBBFF] text-base md:text-xl underline-offset-2 min-w-fit md:min-w-0">
 				<a class="hover:underline cursor-pointer" href={creatorProfileUrl} target="_blank"
-					>{randomRepo.Creator}</a
+					>{randomRepo?.Creator}</a
 				>
 				/
 				<a class="font-bold hover:underline cursor-pointer text-left" href={repoUrl} target="_blank"
-					>{randomRepo.RepoName}</a
+					>{randomRepo?.RepoName}</a
 				>
 			</p>
 		</div>
 
 		<div class="md:ml-auto flex flex-row items-start justify-start -mt-3 md:mt-0 gap-x-3">
-			{#if randomRepo.ProgrammingLanguage.trim() !== ''}
+			{#if randomRepo?.ProgrammingLanguage.trim() !== ''}
 				<span
 					class="max-w-[130px] h-8 md:h-12 bg-[#212831] px-4 rounded-xl shadow-sm shadow-black flex items-center justify-center"
 				>
 					<span
 						class="text-[#b8b8b0] overflow-x-auto overflow-y-hidden whitespace-nowrap horizontal-scrollbar text-base md:text-xl"
-						>{randomRepo.ProgrammingLanguage}</span
+						>{randomRepo?.ProgrammingLanguage}</span
 					>
 				</span>
 			{/if}
 
 			<span
 				class={'md:w-32 bg-[#212831]  items-center px-3 h-8 md:h-12 rounded-xl shadow-sm shadow-black flex justify-center ' +
-					(randomRepo.ProgrammingLanguage.trim() === '' ? 'ml-auto' : '')}
+					(randomRepo?.ProgrammingLanguage.trim() === '' ? 'ml-auto' : '')}
 			>
 				<svg
 					class="w-4 md:w-5 mt-0.5"
@@ -113,7 +115,7 @@
 					/></svg
 				>
 
-				<span class="text-[#b8b8b0] text-base md:text-xl ml-1.5">{randomRepo.Star}</span>
+				<span class="text-[#b8b8b0] text-base md:text-xl ml-1.5">{randomRepo?.Star}</span>
 			</span>
 		</div>
 	</div>
@@ -121,10 +123,10 @@
 	<div
 		class="bg-[#21262C] h-[65%] md:h-[75%] rounded-b-xl flex flex-col overflow-y-auto scrollbar pb-3 relative"
 	>
-		<p class="text-[#a1a7ad] text-sm md:text-base p-3.5">{randomRepo.Description}</p>
+		<p class="text-[#a1a7ad] text-sm md:text-base p-3.5">{randomRepo?.Description}</p>
 
 		<div class="flex flex-row gap-2 items-start justify-start flex-wrap px-3.5 pb-4 md:pb-0">
-			{#each randomRepo.Topics.split(',') as topic}
+			{#each topics as topic}
 				{#if topic.trim() !== ''}
 					<button
 						class="rounded-lg px-2 py-1 text-sm bg-[#121d2f] text-[#2f81f7] hover:bg-[#2057a3] hover:text-white cursor-pointer"

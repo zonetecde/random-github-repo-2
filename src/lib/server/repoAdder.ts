@@ -1,8 +1,8 @@
-import Topic from '$lib/models/Topic.js';
+import Topic from '$lib/models/Topic.ts';
 import { Op } from '@sequelize/core';
 import Variables from '../../routes/api/globalVariables.js';
 import { fetchGithubApi } from '../fetchExtensions.js';
-import Repo from '$lib/models/Repo.js';
+import Repo from '$lib/models/Repo.ts';
 
 async function addReposLoop(specialLoop: boolean = false) {
 	let removedTopics: string[] = [];

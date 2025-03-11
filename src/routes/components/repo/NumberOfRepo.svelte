@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { CTopic } from '../../../models/Topic.js';
+	import type { CTopic } from '../../../models/Topic.ts';
 	import Loading from '../../../assets/loading.gif';
 
 	export let selectedTopics: CTopic[] = [];

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Repo from '../repo/Repo.svelte';
-	import type { CRepo } from '../../../models/Repo.js';
+	import type { CRepo } from '../../../models/Repo.ts';
 
 	let bookmarkedRepos: CRepo[] = [];
 
