@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { CTopic } from '../../../models/Topic.js';
+	import type { CTopic } from '../../../models/Topic.ts';
 
 	let topics: CTopic[];
 	let search = '';
